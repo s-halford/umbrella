@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -16,26 +17,80 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hwj-bF-FWv">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hwj-bF-FWv">
                                 <rect key="frame" x="0.0" y="166" width="600" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="npG-sO-eSE">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="10" id="npG-sO-eSE">
+                                    <size key="itemSize" width="62" height="62"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="20" minY="20" maxX="20" maxY="20"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="lZX-Dn-pmD">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="hourlyCell" id="lZX-Dn-pmD" customClass="HourlyCell" customModule="Umbrella" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="70" width="62" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVU-ka-CeK">
+                                                    <rect key="frame" x="4" y="0.0" width="54" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchGlass" translatesAutoresizingMaskIntoConstraints="NO" id="l7t-aU-qUL">
+                                                    <rect key="frame" x="17" y="17" width="28" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="28" id="aZC-aR-l55"/>
+                                                        <constraint firstAttribute="width" constant="28" id="qHV-LO-7gd"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="72º" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaT-cJ-pR8">
+                                                    <rect key="frame" x="21" y="47" width="21" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="l7t-aU-qUL" firstAttribute="top" secondItem="IVU-ka-CeK" secondAttribute="bottom" constant="2" id="052-Jd-mbC"/>
+                                            <constraint firstItem="CaT-cJ-pR8" firstAttribute="top" secondItem="l7t-aU-qUL" secondAttribute="bottom" constant="2" id="5Hi-TU-1qm"/>
+                                            <constraint firstItem="l7t-aU-qUL" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="8Y6-zQ-KKJ"/>
+                                            <constraint firstItem="CaT-cJ-pR8" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="C2u-Rb-sg9"/>
+                                            <constraint firstItem="l7t-aU-qUL" firstAttribute="centerY" secondItem="lZX-Dn-pmD" secondAttribute="centerY" id="CLv-NQ-8kY"/>
+                                            <constraint firstItem="IVU-ka-CeK" firstAttribute="centerX" secondItem="lZX-Dn-pmD" secondAttribute="centerX" id="lqg-k2-mE5"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="hourlyCellIcon" destination="l7t-aU-qUL" id="W3G-7V-LcK"/>
+                                            <outlet property="hourlyCellTemperatureLabel" destination="CaT-cJ-pR8" id="xJL-mC-9fG"/>
+                                            <outlet property="hourlyCellTimeLabel" destination="IVU-ka-CeK" id="1it-QS-Wk6"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="header" id="GrS-1I-mb1" customClass="SectionHeader" customModule="Umbrella" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pxh-rD-lki">
+                                            <rect key="frame" x="20" y="15" width="42" height="19.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="Pxh-rD-lki" firstAttribute="centerY" secondItem="GrS-1I-mb1" secondAttribute="centerY" id="Fuw-rV-bpO"/>
+                                        <constraint firstItem="Pxh-rD-lki" firstAttribute="leading" secondItem="GrS-1I-mb1" secondAttribute="leadingMargin" constant="12" id="KCd-4z-Qf9"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="headerTItle" destination="Pxh-rD-lki" id="4fm-1N-wAb"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="kSw-0e-Ww5"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="oBP-OB-sOZ"/>
@@ -50,6 +105,16 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="hwj-bF-FWv" secondAttribute="trailing" id="0Xu-Qt-bpb"/>
+                            <constraint firstItem="hwj-bF-FWv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="F0o-WZ-NgO">
+                                <variation key="heightClass=compact" constant="240"/>
+                            </constraint>
+                            <constraint firstItem="hwj-bF-FWv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="146" id="MH5-Yu-2YJ">
+                                <variation key="heightClass=compact" constant="-20"/>
+                            </constraint>
+                            <constraint firstItem="hwj-bF-FWv" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="YP0-dJ-pEH"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="hwj-bF-FWv" id="qfv-0Y-gvu"/>
@@ -88,4 +153,7 @@
             <point key="canvasLocation" x="932" y="597"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="searchGlass" width="14" height="15"/>
+    </resources>
 </document>

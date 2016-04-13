@@ -42,18 +42,49 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDataSource {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        fatalError()
+        return 2
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fatalError()
+        var result = 0
+        switch (section) {
+            case 0:
+                result = 8
+            case 1:
+                result = 16
+            default:
+                result = 0
+        }
+        return result
+        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        fatalError()
+        //fatalError()
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("hourlyCell", forIndexPath: indexPath) as! HourlyCell
+        
+        cell.hourlyCellTimeLabel?.text = "1:00 PM"
+        return cell
+        
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        fatalError()
+        
+        let header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "header", forIndexPath: indexPath) as! SectionHeader
+        
+        //header.headerTItle?.text = "Today"
+       
+        
+        switch indexPath.section {
+            case 0:
+                header.headerTItle?.text = "Today"
+            case 1:
+                header.headerTItle?.text = "Tomorrow"
+            default:
+                header.headerTItle?.text = "Header"
+        }
+        
+        return header
+        
     }
 }
