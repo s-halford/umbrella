@@ -283,16 +283,77 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
-                                <rect key="frame" x="20" y="28" width="282" height="30"/>
-                                <state key="normal" title="RETURN FROM WHENCE I CAME"/>
-                                <connections>
-                                    <segue destination="5HP-Li-T4U" kind="unwind" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
-                                </connections>
-                            </button>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r2o-Cj-Tx9">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aBj-MM-WFI">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="emD-SN-Qb3">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="F1v-co-SEU">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wtx-nR-VNG">
+                                                        <rect key="frame" x="187" y="100" width="225" height="29"/>
+                                                        <segments>
+                                                            <segment title="Fahrenheit"/>
+                                                            <segment title="Celsius"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="tempScaleChanged:" destination="YI1-vi-hdI" eventType="valueChanged" id="bML-r9-1RX"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
+                                                        <rect key="frame" x="245" y="153" width="110" height="30"/>
+                                                        <state key="normal" title="Get the weather"/>
+                                                        <connections>
+                                                            <segue destination="5HP-Li-T4U" kind="unwind" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="centerX" secondItem="F1v-co-SEU" secondAttribute="centerX" id="9SQ-Ew-3Cq"/>
+                                                    <constraint firstItem="Wtx-nR-VNG" firstAttribute="centerX" secondItem="F1v-co-SEU" secondAttribute="centerX" id="Op4-9k-le9"/>
+                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="top" secondItem="Wtx-nR-VNG" secondAttribute="bottom" constant="25" id="aBi-QY-igl"/>
+                                                </constraints>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="dark"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="leading" secondItem="aBj-MM-WFI" secondAttribute="leading" id="O6e-0M-EI1"/>
+                                        <constraint firstAttribute="bottom" secondItem="emD-SN-Qb3" secondAttribute="bottom" id="YnV-ae-nJo"/>
+                                        <constraint firstAttribute="trailing" secondItem="emD-SN-Qb3" secondAttribute="trailing" id="dqM-xb-UCh"/>
+                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="top" secondItem="aBj-MM-WFI" secondAttribute="top" id="k5h-J2-5o3"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Zip Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sfi-pY-IRz">
+                                <rect key="frame" x="15" y="45" width="570" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Wtx-nR-VNG" firstAttribute="top" secondItem="sfi-pY-IRz" secondAttribute="bottom" constant="25" id="8dQ-c0-Pdz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sfi-pY-IRz" secondAttribute="trailing" constant="-5" id="G3M-4s-lZs"/>
+                            <constraint firstItem="sfi-pY-IRz" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="25" id="KRh-hc-w0Q"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="r2o-Cj-Tx9" secondAttribute="trailing" constant="-20" id="TC9-ks-Cxb"/>
+                            <constraint firstItem="sfi-pY-IRz" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="-5" id="TJr-yx-N40"/>
+                            <constraint firstItem="r2o-Cj-Tx9" firstAttribute="top" secondItem="ZNF-zW-a6M" secondAttribute="topMargin" id="TPc-ed-oEG"/>
+                            <constraint firstItem="r2o-Cj-Tx9" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="-20" id="guo-Iw-eGe"/>
+                            <constraint firstItem="Wyu-8R-YGN" firstAttribute="top" secondItem="r2o-Cj-Tx9" secondAttribute="bottom" id="lQp-O4-PBA"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="zipTextField" destination="sfi-pY-IRz" id="TZ4-Pu-zMs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9pf-OA-xHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="5HP-Li-T4U" userLabel="Exit" sceneMemberID="exit"/>

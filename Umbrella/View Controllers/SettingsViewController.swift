@@ -10,6 +10,12 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    @IBAction func tempScaleChanged(sender: AnyObject) {
+    
+    }
+    
+    @IBOutlet weak var zipTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
