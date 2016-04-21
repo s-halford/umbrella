@@ -28,12 +28,21 @@ class NetworkOperation {
             (let data, let response, let error) in
             
             if let httpResponse = response as? NSHTTPURLResponse {
-                do {
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
-                        completion(jsonDictionary)
-                } catch let error {
-                    print("JSON Serialization failed. Error: \(error)")
+                
+                switch httpResponse.statusCode {
+                    case 200 :
+                        do {
+                            let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+                            completion(jsonDictionary)
+                        } catch let error {
+                            print("JSON Serialization failed. Error: \(error)")
+                        }
+                    default:
+                        print("GET request not successful.  HTTP status code: \(httpResponse.statusCode)")
                 }
+                
+                
+                
             } else {
                 print("Error: Not a valid HTTP response")
             }

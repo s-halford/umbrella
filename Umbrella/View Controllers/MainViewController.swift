@@ -17,17 +17,21 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView?
     
+    //var zipError: [ZipError] = []
     var hourlyWeather: [HourlyWeather] = []
     var dailyWeather: [[HourlyWeather]] = []
-  
+    var apiKey = "fe607001f7266360"
+    var currentZip = ""
+    var tempScale = "Fahrenheit"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        retrieveWeatherForecast()
+        //retrieveWeatherForecast()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -36,6 +40,7 @@ class MainViewController: UIViewController {
     // MARK: - Navigation
     
     @IBAction func returnFromSettingsSegue(_: UIStoryboardSegue) {
+        print("I'm back!")
         
     }
     
@@ -45,31 +50,66 @@ class MainViewController: UIViewController {
         // Pass the selected object to the new view controller.
         
         // Set the popover presentation style delegate to always force a popover
+        
+        let svc = segue.destinationViewController as? SettingsViewController
+        svc?.tempScale = tempScale
+        svc?.currentZip = currentZip
     }
     
     // MARK: - Weather Fetching
-    
+        
     func retrieveWeatherForecast() {
-        var weatherRequest = WeatherRequest(APIKey: "fe607001f7266360")
+        dailyWeather = []
+        hourlyWeather = []
+        var weatherRequest = WeatherRequest(APIKey: apiKey)
         
         // Set the zip code
-        weatherRequest.zipCode = "90293"
+        weatherRequest.zipCode = currentZip
         
         // Here's your URL. Marshall this to the internet however you please.
         let url = weatherRequest.URL
         
-
         let forecastService = ForecastService()
         forecastService.getForecast(url!) {
         
-        //weatherRequest.getForecast() {
             (let forecast) in
+            
+            print("Get Forecast")
+            
+            if let zipError = forecast!.zipError where
+            zipError.errorDescription != nil {
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    let alert = UIAlertController(title: nil, message: zipError.errorDescription?.capitalizedString, preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: { (a) in
+                        self.performSegueWithIdentifier("settingsSegue", sender: nil)
+                        //alert.removeFromParentViewController()
+                    })
+                    
+                    alert.addAction(action)
+//                    if(self.presentedViewController != nil) {
+//                        self.dismissViewControllerAnimated(true, completion: nil)
+//                    }
+                
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                }
+            }
+            
             if let weatherForecast = forecast,
                 let currentWeather = weatherForecast.currentWeather {
                 
                 dispatch_async(dispatch_get_main_queue()) {
-                    if let temp_f = currentWeather.temp_f {
-                        self.currentTemperatureLabel?.text = "\(temp_f)º"
+            
+                    if let temp_f = currentWeather.temp_f,
+                    let temp_c = currentWeather.temp_c {
+                        if(self.tempScale == "Fahrenheit") {
+                            self.currentTemperatureLabel?.text = "\(temp_f)º"
+                        } else {
+                            self.currentTemperatureLabel?.text = "\(temp_c)º"
+                        }
+                        
+                        
                     }
 
                     if let cityState = currentWeather.cityState {
@@ -79,6 +119,7 @@ class MainViewController: UIViewController {
                     if let currentConditions = currentWeather.currentConditions {
                         self.currentConditionsLabel?.text = "\(currentConditions)"
                     }
+                    
                     
                     self.hourlyWeather = weatherForecast.hourly
                     
@@ -152,15 +193,12 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return dailyWeather[section].count
-        //return hourlyWeather.count
         
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         //fatalError()
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("hourlyCell", forIndexPath: indexPath) as! HourlyCell
-        
-        //let hourWeather = hourlyWeather[indexPath.row]
         
         let hourWeather = dailyWeather[indexPath.section][indexPath.row]
         
@@ -173,8 +211,13 @@ extension MainViewController: UICollectionViewDataSource {
             cell.hourlyCellIcon?.downloadFromURL("\(icon_url)", contentMode: .ScaleAspectFit)
         }
         
-        if let temp_english = hourWeather.temp_english {
-            cell.hourlyCellTemperatureLabel?.text = "\(temp_english)º"
+        if let temp_english = hourWeather.temp_english,
+        let temp_metric = hourWeather.temp_metric {
+            if(self.tempScale == "Fahrenheit") {
+                cell.hourlyCellTemperatureLabel?.text = "\(temp_english)º"
+            } else {
+                cell.hourlyCellTemperatureLabel?.text = "\(temp_metric)º"
+            }
             
         }
         

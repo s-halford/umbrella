@@ -123,7 +123,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="YI1-vi-hdI" kind="presentation" modalPresentationStyle="overCurrentContext" id="wwa-Co-UVG"/>
+                                            <segue destination="YI1-vi-hdI" kind="presentation" identifier="settingsSegue" modalPresentationStyle="overCurrentContext" id="wwa-Co-UVG"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -156,10 +156,10 @@
                                         <exclude reference="CTT-MV-8sU"/>
                                         <exclude reference="VqT-eU-rSi"/>
                                         <exclude reference="brX-iv-0J5"/>
-                                        <exclude reference="ATi-KG-RBw"/>
-                                        <exclude reference="HK9-Wo-p1g"/>
                                         <exclude reference="GZz-xz-Nwu"/>
                                         <exclude reference="pwt-s7-EnS"/>
+                                        <exclude reference="ATi-KG-RBw"/>
+                                        <exclude reference="HK9-Wo-p1g"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=compact">
@@ -174,14 +174,14 @@
                                         <exclude reference="Hdp-Lp-KqG"/>
                                         <include reference="VqT-eU-rSi"/>
                                         <include reference="brX-iv-0J5"/>
-                                        <exclude reference="8Yn-LE-jcg"/>
-                                        <include reference="ATi-KG-RBw"/>
-                                        <exclude reference="BCY-15-i9L"/>
-                                        <include reference="HK9-Wo-p1g"/>
                                         <include reference="GZz-xz-Nwu"/>
                                         <exclude reference="HZW-4J-GDo"/>
                                         <exclude reference="af9-ga-pwP"/>
                                         <include reference="pwt-s7-EnS"/>
+                                        <exclude reference="8Yn-LE-jcg"/>
+                                        <include reference="ATi-KG-RBw"/>
+                                        <exclude reference="BCY-15-i9L"/>
+                                        <include reference="HK9-Wo-p1g"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -289,14 +289,49 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHr-bg-fTg" customClass="ZipCodeBackground" customModule="Umbrella" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="45" width="570" height="30"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Zip Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sfi-pY-IRz">
+                                                    <rect key="frame" x="34" y="0.0" width="526" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="YI1-vi-hdI" id="5UI-vh-zls"/>
+                                                    </connections>
+                                                </textField>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchGlass" translatesAutoresizingMaskIntoConstraints="NO" id="X3c-Wa-MEK">
+                                                    <rect key="frame" x="10" y="8" width="14" height="15"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="sfi-pY-IRz" secondAttribute="trailing" constant="10" id="CzC-xo-T68"/>
+                                                <constraint firstItem="sfi-pY-IRz" firstAttribute="centerY" secondItem="mHr-bg-fTg" secondAttribute="centerY" id="DYB-w7-Laq"/>
+                                                <constraint firstItem="X3c-Wa-MEK" firstAttribute="top" secondItem="mHr-bg-fTg" secondAttribute="topMargin" id="Ht4-VE-mxc"/>
+                                                <constraint firstItem="X3c-Wa-MEK" firstAttribute="centerY" secondItem="mHr-bg-fTg" secondAttribute="centerY" id="R7f-9u-GLW"/>
+                                                <constraint firstItem="sfi-pY-IRz" firstAttribute="leading" secondItem="X3c-Wa-MEK" secondAttribute="trailing" constant="10" id="SWm-kY-PXn"/>
+                                                <constraint firstItem="X3c-Wa-MEK" firstAttribute="leading" secondItem="mHr-bg-fTg" secondAttribute="leading" constant="10" id="UZ8-DJ-do0"/>
+                                                <constraint firstItem="sfi-pY-IRz" firstAttribute="top" secondItem="mHr-bg-fTg" secondAttribute="top" id="dRB-cf-Xq6"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="emD-SN-Qb3">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                            <rect key="frame" x="0.0" y="83" width="600" height="517"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="F1v-co-SEU">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="517"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wtx-nR-VNG">
-                                                        <rect key="frame" x="187" y="100" width="225" height="29"/>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wtx-nR-VNG">
+                                                        <rect key="frame" x="187" y="17" width="225" height="29"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="225" id="k2H-cG-e35"/>
+                                                        </constraints>
                                                         <segments>
                                                             <segment title="Fahrenheit"/>
                                                             <segment title="Celsius"/>
@@ -306,7 +341,7 @@
                                                         </connections>
                                                     </segmentedControl>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-rc-H9U">
-                                                        <rect key="frame" x="245" y="153" width="110" height="30"/>
+                                                        <rect key="frame" x="245" y="70" width="110" height="30"/>
                                                         <state key="normal" title="Get the weather"/>
                                                         <connections>
                                                             <segue destination="5HP-Li-T4U" kind="unwind" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
@@ -314,9 +349,8 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="centerX" secondItem="F1v-co-SEU" secondAttribute="centerX" id="9SQ-Ew-3Cq"/>
-                                                    <constraint firstItem="Wtx-nR-VNG" firstAttribute="centerX" secondItem="F1v-co-SEU" secondAttribute="centerX" id="Op4-9k-le9"/>
-                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="top" secondItem="Wtx-nR-VNG" secondAttribute="bottom" constant="25" id="aBi-QY-igl"/>
+                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="top" secondItem="Wtx-nR-VNG" secondAttribute="bottom" constant="25" id="OoQ-02-Aty"/>
+                                                    <constraint firstItem="nk9-rc-H9U" firstAttribute="centerX" secondItem="Wtx-nR-VNG" secondAttribute="centerX" id="yHw-pp-wVU"/>
                                                 </constraints>
                                             </view>
                                             <vibrancyEffect>
@@ -325,33 +359,31 @@
                                         </visualEffectView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="leading" secondItem="aBj-MM-WFI" secondAttribute="leading" id="O6e-0M-EI1"/>
-                                        <constraint firstAttribute="bottom" secondItem="emD-SN-Qb3" secondAttribute="bottom" id="YnV-ae-nJo"/>
-                                        <constraint firstAttribute="trailing" secondItem="emD-SN-Qb3" secondAttribute="trailing" id="dqM-xb-UCh"/>
-                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="top" secondItem="aBj-MM-WFI" secondAttribute="top" id="k5h-J2-5o3"/>
+                                        <constraint firstItem="mHr-bg-fTg" firstAttribute="top" secondItem="aBj-MM-WFI" secondAttribute="top" constant="45" id="0mc-tx-Zbd"/>
+                                        <constraint firstItem="Wtx-nR-VNG" firstAttribute="top" secondItem="mHr-bg-fTg" secondAttribute="bottom" constant="25" id="HtD-Sa-3iH"/>
+                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="top" secondItem="mHr-bg-fTg" secondAttribute="bottom" constant="8" id="JEj-ED-mJF"/>
+                                        <constraint firstAttribute="trailing" secondItem="mHr-bg-fTg" secondAttribute="trailing" constant="15" id="Jqc-Yn-1QT"/>
+                                        <constraint firstItem="emD-SN-Qb3" firstAttribute="leading" secondItem="aBj-MM-WFI" secondAttribute="leading" id="M7M-vz-zyP"/>
+                                        <constraint firstItem="Wtx-nR-VNG" firstAttribute="centerX" secondItem="mHr-bg-fTg" secondAttribute="centerX" id="R6v-TS-9o3"/>
+                                        <constraint firstAttribute="bottom" secondItem="emD-SN-Qb3" secondAttribute="bottom" id="WxF-47-hUK"/>
+                                        <constraint firstItem="mHr-bg-fTg" firstAttribute="leading" secondItem="aBj-MM-WFI" secondAttribute="leading" constant="15" id="bNa-u2-Hgk"/>
+                                        <constraint firstAttribute="trailing" secondItem="emD-SN-Qb3" secondAttribute="trailing" id="c1w-q3-5eK"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Zip Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sfi-pY-IRz">
-                                <rect key="frame" x="15" y="45" width="570" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Wtx-nR-VNG" firstAttribute="top" secondItem="sfi-pY-IRz" secondAttribute="bottom" constant="25" id="8dQ-c0-Pdz"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="sfi-pY-IRz" secondAttribute="trailing" constant="-5" id="G3M-4s-lZs"/>
-                            <constraint firstItem="sfi-pY-IRz" firstAttribute="top" secondItem="Z0j-2K-kTr" secondAttribute="bottom" constant="25" id="KRh-hc-w0Q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="r2o-Cj-Tx9" secondAttribute="trailing" constant="-20" id="TC9-ks-Cxb"/>
-                            <constraint firstItem="sfi-pY-IRz" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="-5" id="TJr-yx-N40"/>
                             <constraint firstItem="r2o-Cj-Tx9" firstAttribute="top" secondItem="ZNF-zW-a6M" secondAttribute="topMargin" id="TPc-ed-oEG"/>
                             <constraint firstItem="r2o-Cj-Tx9" firstAttribute="leading" secondItem="ZNF-zW-a6M" secondAttribute="leadingMargin" constant="-20" id="guo-Iw-eGe"/>
                             <constraint firstItem="Wyu-8R-YGN" firstAttribute="top" secondItem="r2o-Cj-Tx9" secondAttribute="bottom" id="lQp-O4-PBA"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tempScaleSegmentedControl" destination="Wtx-nR-VNG" id="dSR-m5-gXW"/>
+                        <outlet property="zipCodeBackground" destination="mHr-bg-fTg" id="rnu-jO-9oc"/>
                         <outlet property="zipTextField" destination="sfi-pY-IRz" id="TZ4-Pu-zMs"/>
                     </connections>
                 </viewController>

@@ -25,6 +25,8 @@
 		853EE3E71CC34549008903B5 /* HourlyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853EE3E61CC34549008903B5 /* HourlyWeather.swift */; };
 		853EE3E91CC35286008903B5 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853EE3E81CC35286008903B5 /* Forecast.swift */; };
 		853EE3EB1CC4AD17008903B5 /* ForecastService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853EE3EA1CC4AD17008903B5 /* ForecastService.swift */; };
+		853EE3ED1CC6F69A008903B5 /* ZipError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853EE3EC1CC6F69A008903B5 /* ZipError.swift */; };
+		853EE3EF1CC84B0D008903B5 /* ZipCodeBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853EE3EE1CC84B0D008903B5 /* ZipCodeBackground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		853EE3E61CC34549008903B5 /* HourlyWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourlyWeather.swift; sourceTree = "<group>"; };
 		853EE3E81CC35286008903B5 /* Forecast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		853EE3EA1CC4AD17008903B5 /* ForecastService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastService.swift; sourceTree = "<group>"; };
+		853EE3EC1CC6F69A008903B5 /* ZipError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipError.swift; sourceTree = "<group>"; };
+		853EE3EE1CC84B0D008903B5 /* ZipCodeBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipCodeBackground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +128,7 @@
 				44DE82B31BCDF45900A319D2 /* AppDelegate.swift */,
 				44DE82B71BCDF45900A319D2 /* Main.storyboard */,
 				853EE3DB1CBF58E3008903B5 /* LineView.swift */,
+				853EE3EE1CC84B0D008903B5 /* ZipCodeBackground.swift */,
 				44DE82BA1BCDF45900A319D2 /* Assets.xcassets */,
 				44DE82BC1BCDF45900A319D2 /* LaunchScreen.storyboard */,
 				44DE82BF1BCDF45900A319D2 /* Info.plist */,
@@ -175,6 +180,7 @@
 		853EE3E51CC34515008903B5 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				853EE3EC1CC6F69A008903B5 /* ZipError.swift */,
 				853EE3E31CBF7B10008903B5 /* CurrentWeather.swift */,
 				853EE3E61CC34549008903B5 /* HourlyWeather.swift */,
 				853EE3E81CC35286008903B5 /* Forecast.swift */,
@@ -282,9 +288,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				853EE3EF1CC84B0D008903B5 /* ZipCodeBackground.swift in Sources */,
 				44DE82DF1BCDF8EE00A319D2 /* WeatherRequest.swift in Sources */,
 				44DE82E11BCDFBBB00A319D2 /* String+Umbrella.swift in Sources */,
 				853EE3DE1CBF681B008903B5 /* NetworkOperation.swift in Sources */,
+				853EE3ED1CC6F69A008903B5 /* ZipError.swift in Sources */,
 				44DE82DD1BCDF7C800A319D2 /* UIColor+Nerdery.swift in Sources */,
 				44DE82D91BCDF4C500A319D2 /* MainViewController.swift in Sources */,
 				853EE3BA1CBEF621008903B5 /* SectionHeader.swift in Sources */,

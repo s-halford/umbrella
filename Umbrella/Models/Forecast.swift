@@ -9,10 +9,15 @@
 import Foundation
 
 struct Forecast {
+    var zipError: ZipError?
     var currentWeather: CurrentWeather?
     var hourly: [HourlyWeather] = []
     
     init(weatherDictionary: [String: AnyObject]?) {
+        if let responseDictionary = weatherDictionary?["response"] as? [String: AnyObject] {
+            zipError = ZipError(weatherDictionary: responseDictionary)
+        }
+        
         if let currentWeatherDictionary = weatherDictionary?["current_observation"] as? [String: AnyObject] {
             currentWeather = CurrentWeather(weatherDictionary: currentWeatherDictionary)
         }
