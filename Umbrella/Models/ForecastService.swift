@@ -9,14 +9,17 @@
 import Foundation
 
 struct ForecastService {
-        
-    func getForecast(URL: NSURL, completion: (Forecast? -> Void)) {
+    
+    
+    //Perform network operation, create Forecast objects
+    func getForecast(URL: NSURL, completion: ((Forecast?)-> Void)) {
         let networkOperation = NetworkOperation(url: URL)
-        
+   
         networkOperation.downloadJSONFromURL {
             (let JSONDictionary) in
             let forecast = Forecast(weatherDictionary: JSONDictionary)
             completion(forecast)
+            
         }
         
         

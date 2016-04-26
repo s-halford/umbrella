@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable
-class ZipCodeBackground: UIView {
+class RoundedRect: UIView {
     
     @IBInspectable var cornerRadius: CGFloat = 10.0 {
         didSet {
@@ -17,5 +17,5 @@ class ZipCodeBackground: UIView {
             layer.masksToBounds = cornerRadius > 0
         }
     }
-
+    
 }

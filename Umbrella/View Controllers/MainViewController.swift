@@ -13,22 +13,28 @@ class MainViewController: UIViewController {
     @IBOutlet weak var currentTemperatureLabel: UILabel?
     @IBOutlet weak var currentConditionsLabel: UILabel?
     @IBOutlet weak var currentCityStateLabel: UILabel?
-    @IBOutlet weak var settingsButton: UIImageView?
-    
+    @IBOutlet weak var backgroundBox: UIView!
     @IBOutlet weak var collectionView: UICollectionView?
     
-    //var zipError: [ZipError] = []
-    var hourlyWeather: [HourlyWeather] = []
-    var dailyWeather: [[HourlyWeather]] = []
-    var apiKey = "fe607001f7266360"
+    var dailyWeather: [DailyWeather] = []
+    
+    let apiKey = "fe607001f7266360"
+    let warmColor = UIColor(0xFF9800)
+    let coolColor = UIColor(0x03A9F4)
+    var tempScale = TempScales.f
     var currentZip = ""
-    var tempScale = "Fahrenheit"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-        //retrieveWeatherForecast()
+        
+        //Initialize settings and values
+        currentTemperatureLabel?.text = " "
+        currentConditionsLabel?.text = " "
+        currentCityStateLabel?.text = " "
+        backgroundBox.layer.backgroundColor = warmColor.CGColor
+        retrieveWeatherForecast(validateZip: true)
         
     }
     
@@ -39,9 +45,14 @@ class MainViewController: UIViewController {
     
     // MARK: - Navigation
     
-    @IBAction func returnFromSettingsSegue(_: UIStoryboardSegue) {
-        print("I'm back!")
+    @IBAction func returnFromSettingsSegue(segue: UIStoryboardSegue) {
         
+        // Retrieve updated values from the Settings View Controlloer
+        if let svc = segue.sourceViewController as? SettingsViewController {
+            tempScale = svc.tempScale
+            currentZip = svc.zipTextField.text!
+            retrieveWeatherForecast(validateZip: true)
+        }
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -49,18 +60,17 @@ class MainViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        // Set the popover presentation style delegate to always force a popover
-        
         let svc = segue.destinationViewController as? SettingsViewController
         svc?.tempScale = tempScale
         svc?.currentZip = currentZip
     }
     
     // MARK: - Weather Fetching
-        
-    func retrieveWeatherForecast() {
+    
+    func retrieveWeatherForecast(validateZip validateZip: Bool) {
+        // Clear daily weather
         dailyWeather = []
-        hourlyWeather = []
+        
         var weatherRequest = WeatherRequest(APIKey: apiKey)
         
         // Set the zip code
@@ -69,118 +79,94 @@ class MainViewController: UIViewController {
         // Here's your URL. Marshall this to the internet however you please.
         let url = weatherRequest.URL
         
+        // Use ForecastService to retrieve current weather data
         let forecastService = ForecastService()
-        forecastService.getForecast(url!) {
         
+        forecastService.getForecast(url!) {
+            
             (let forecast) in
             
-            print("Get Forecast")
-            
-            if let zipError = forecast!.zipError where
-            zipError.errorDescription != nil {
+            //Handle any errors related to Zip Code Entry
+            if let weatherError = forecast!.errors where
+                weatherError.errorDescription != nil {
                 
                 dispatch_async(dispatch_get_main_queue()) {
-                    let alert = UIAlertController(title: nil, message: zipError.errorDescription?.capitalizedString, preferredStyle: .Alert)
-                    let action = UIAlertAction(title: "OK", style: .Default, handler: { (a) in
-                        self.performSegueWithIdentifier("settingsSegue", sender: nil)
-                        //alert.removeFromParentViewController()
-                    })
                     
-                    alert.addAction(action)
-//                    if(self.presentedViewController != nil) {
-//                        self.dismissViewControllerAnimated(true, completion: nil)
-//                    }
-                
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
+                    if(validateZip) {
+                        
+                        //Configure an alert with any errors in weather fetching
+                        let alert = UIAlertController(title: nil, message: weatherError.errorDescription?.capitalizedString, preferredStyle: .Alert)
+                       
+                        //Display a more user-friendly message if no zip code has been entered
+                        if(weatherError.errorType == "invalidquery") {
+                            alert.message = "Please Enter a ZIP Code Location"
+                        }
+                        
+                        //Take users to the settings screen if no ZIP code exists or the one they entered is invalid
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (a) in
+                            self.performSegueWithIdentifier("settingsSegue", sender: nil)
+                        })
+                        
+                        //Present the Alert View
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                   }
                 }
             }
             
+            //Set up weather data
             if let weatherForecast = forecast,
+                
+                //Display current weather data in UI
                 let currentWeather = weatherForecast.currentWeather {
                 
                 dispatch_async(dispatch_get_main_queue()) {
-            
+                    
                     if let temp_f = currentWeather.temp_f,
-                    let temp_c = currentWeather.temp_c {
-                        if(self.tempScale == "Fahrenheit") {
-                            self.currentTemperatureLabel?.text = "\(temp_f)º"
+                        let temp_c = currentWeather.temp_c {
+                        
+                        //Set background box color to warm or cool dependent on current temperature value
+                        if(temp_f >= 60) {
+                            self.backgroundBox.layer.backgroundColor = self.warmColor.CGColor
                         } else {
-                            self.currentTemperatureLabel?.text = "\(temp_c)º"
+                            self.backgroundBox.layer.backgroundColor = self.coolColor.CGColor
+                        }
+                        
+                        //Round the current temperature value and display it in the UI
+                        if(self.tempScale == TempScales.f) {
+                            self.currentTemperatureLabel?.text = "\(Int(round(temp_f)))º"
+                        } else {
+                            self.currentTemperatureLabel?.text = "\(Int(round(temp_c)))º"
                         }
                         
                         
                     }
-
+                    
+                    //Display City/State Info
                     if let cityState = currentWeather.cityState {
                         self.currentCityStateLabel?.text = "\(cityState)"
                     }
                     
+                    //Display Current Conditons Info
                     if let currentConditions = currentWeather.currentConditions {
                         self.currentConditionsLabel?.text = "\(currentConditions)"
                     }
                     
+                    //Retrieve the returned hourly forecast info, and convert the results to the daily data models
+                    let dailyRequest = DailyRequest(weatherForecast.hourly)
+                    self.dailyWeather = dailyRequest.Daily!
                     
-                    self.hourlyWeather = weatherForecast.hourly
-                    
-                    self.setupDaily()
-                    
+                    //Refresh the view with the current data
                     self.collectionView?.reloadData()
-                    
+                
                 }
             }
         }
         
     }
     
-    func setupDaily() {
-        var tempWeather: [HourlyWeather] = []
-        
-        for item in self.hourlyWeather {
-            
-            if item.timeStamp == "12:00 AM" {
-                self.dailyWeather.append(tempWeather)
-                tempWeather = []
-            }
-            tempWeather.append(item)
-            
-        }
-        
-        self.dailyWeather.append(tempWeather)
-
-    }
+    
 }
-
-extension UIImageView {
-    func downloadFromURL(URL:String, contentMode mode: UIViewContentMode) {
-        guard
-            let url = NSURL(string: URL)
-            else {return}
-        contentMode = mode
-        
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration)
-        
-        let dataTask = session.dataTaskWithURL(url) {
-            (let data, let response, let error) in
-            
-            guard
-                let httpResponse = response as? NSHTTPURLResponse where httpResponse.statusCode == 200,
-                let data = data where error == nil,
-                let mimeType = response?.MIMEType where mimeType.hasPrefix("image"),
-                let image = UIImage(data: data)
-                else { return }
-            dispatch_async(dispatch_get_main_queue()) {
-                self.image = image
-            }
-            
-        }
-        
-        dataTask.resume()
-        
-    }
-}
-
 
 
 // MARK: - UICollectionViewDataSource
@@ -191,29 +177,57 @@ extension MainViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return dailyWeather[section].count
-        
+        return dailyWeather[section].hourlyWeather.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         //fatalError()
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("hourlyCell", forIndexPath: indexPath) as! HourlyCell
         
-        let hourWeather = dailyWeather[indexPath.section][indexPath.row]
+        let hourWeather = dailyWeather[indexPath.section].hourlyWeather[indexPath.row]
         
         if let timeStamp = hourWeather.timeStamp {
             cell.hourlyCellTimeLabel?.text = "\(timeStamp)"
         }
         
         if let icon = hourWeather.icon {
-            let icon_url = "\(icon)".nrd_weatherIconURL()!
+            
+            var icon_url = "\(icon)".nrd_weatherIconURL()!
+            
+            //Set a cells items to black initially
+            cell.hourlyCellIcon?.tintColor = .blackColor()
+            cell.hourlyCellTimeLabel?.textColor = .blackColor()
+            cell.hourlyCellTemperatureLabel?.textColor = .blackColor()
+            
+            //If the high and the low for the day are equal, skip don't apply any tint
+            if(dailyWeather[indexPath.section].highIndex != dailyWeather[indexPath.section].lowIndex) {
+                
+                //If this cell is the high for the day, tint the cell's items to the warm color
+                if(indexPath.row == dailyWeather[indexPath.section].highIndex) {
+                    icon_url = "\(icon)".nrd_weatherIconURL(highlighted: true)!
+                    cell.hourlyCellIcon?.tintColor = warmColor
+                    cell.hourlyCellTimeLabel?.textColor = warmColor
+                    cell.hourlyCellTemperatureLabel?.textColor = warmColor
+                }
+                
+                //If this cell is the low for the day, tint the cell's items to the cool color
+                if(indexPath.row == dailyWeather[indexPath.section].lowIndex) {
+                    icon_url = "\(icon)".nrd_weatherIconURL(highlighted: true)!
+                    cell.hourlyCellIcon?.tintColor = coolColor
+                    cell.hourlyCellTimeLabel?.textColor = coolColor
+                    cell.hourlyCellTemperatureLabel?.textColor = coolColor
+                }
+            }
+            
             cell.hourlyCellIcon?.downloadFromURL("\(icon_url)", contentMode: .ScaleAspectFit)
         }
         
         if let temp_english = hourWeather.temp_english,
-        let temp_metric = hourWeather.temp_metric {
-            if(self.tempScale == "Fahrenheit") {
+            let temp_metric = hourWeather.temp_metric {
+            
+            //Set temperature display to fahrenheit or celsius depending on what the user currently has selected
+            if(self.tempScale == TempScales.f) {
                 cell.hourlyCellTemperatureLabel?.text = "\(temp_english)º"
             } else {
                 cell.hourlyCellTemperatureLabel?.text = "\(temp_metric)º"
@@ -225,20 +239,15 @@ extension MainViewController: UICollectionViewDataSource {
         
     }
     
-   
+    
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
+        //Initialize header cell
         let header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "header", forIndexPath: indexPath) as! SectionHeader
         
-        switch indexPath.section {
-            case 0:
-                header.headerTItle?.text = "Today"
-            case 1:
-                header.headerTItle?.text = "Tomorrow"
-            default:
-                header.headerTItle?.text = "Day After Tomorrow"
-        }
-        
+        //Add section header
+        header.headerTItle?.text = dailyWeather[indexPath.section].headerTitle
+
         return header
         
     }

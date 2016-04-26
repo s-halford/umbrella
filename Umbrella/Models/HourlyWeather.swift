@@ -17,6 +17,7 @@ struct HourlyWeather {
     let temp_metric: String?
    
     init(hourlyWeatherDict: [String: AnyObject]) {
+        
         timeStamp = hourlyWeatherDict["FCTTIME"]?["civil"] as? String
         icon = hourlyWeatherDict["icon"] as? String
         icon_url = hourlyWeatherDict["icon_url"] as? String

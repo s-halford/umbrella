@@ -10,16 +10,13 @@ import UIKit
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
     
-    var tempScale = ""
     var currentZip = ""
+    var tempScale = TempScales.f
     
     @IBAction func tempScaleChanged(sender: AnyObject) {
-        let index = sender.selectedSegmentIndex
-        let title = sender.titleForSegmentAtIndex(index)!
-        tempScale = title
+        tempScale = TempScales(rawValue: sender.selectedSegmentIndex)!
     }
     
-    @IBOutlet weak var zipCodeBackground: UIView!
     @IBOutlet weak var tempScaleSegmentedControl: UISegmentedControl!
     @IBOutlet weak var zipTextField: UITextField!
     
@@ -31,50 +28,22 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // zipTextField.becomeFirstResponder()
-        zipTextField.text = currentZip
-        setupSegmentedControl()
-        
         // Do any additional setup after loading the view.
+        
+        zipTextField.text = currentZip
+        tempScaleSegmentedControl.selectedSegmentIndex = tempScale.rawValue
+        
     }
     
-    func setupSegmentedControl() {
-        if(tempScale == "Fahrenheit") {
-            tempScaleSegmentedControl.selectedSegmentIndex = 0
-        } else {
-            tempScaleSegmentedControl.selectedSegmentIndex = 1
-        }
-        
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        let mvc = segue.destinationViewController as? MainViewController
-        mvc?.tempScale = tempScale
-        mvc?.currentZip = zipTextField.text!
-        mvc?.retrieveWeatherForecast()
-        
-    }
     
 
 }

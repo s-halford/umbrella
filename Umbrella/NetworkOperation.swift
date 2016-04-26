@@ -23,15 +23,17 @@ class NetworkOperation {
     
     func downloadJSONFromURL(completion: JSONDictionaryCompletion) {
         
+        // Perform the network request
         let request: NSURLRequest = NSURLRequest(URL: queryURL)
         let dataTask = session.dataTaskWithRequest(request) {
             (let data, let response, let error) in
             
+            //Checek for valid httpResponse
             if let httpResponse = response as? NSHTTPURLResponse {
-                
                 switch httpResponse.statusCode {
                     case 200 :
                         do {
+                            //Serialize JSON data
                             let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
                             completion(jsonDictionary)
                         } catch let error {
@@ -40,15 +42,14 @@ class NetworkOperation {
                     default:
                         print("GET request not successful.  HTTP status code: \(httpResponse.statusCode)")
                 }
-                
-                
-                
             } else {
-                print("Error: Not a valid HTTP response")
+                print("Error: \(error?.localizedDescription)")
             }
         }
         
-         dataTask.resume()
+        //Start data task
+        dataTask.resume()
+        
     }
     
 }

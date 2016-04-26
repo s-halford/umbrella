@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable
-class LineView: UIView {
+class DrawLine: UIView {
 
     @IBInspectable var lineWidth: CGFloat = 1.0
     @IBInspectable var lineColor: UIColor? {

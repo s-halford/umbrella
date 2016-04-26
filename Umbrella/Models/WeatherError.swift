@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct ZipError {
+struct WeatherError {
     
     let errorType: String?
     let errorDescription: String?
     
-    init(weatherDictionary: [String: AnyObject]) {
-        errorType = weatherDictionary["error"]?["type"] as? String
-        errorDescription = weatherDictionary["error"]?["description"] as? String
+    init(errorDictionary: [String: AnyObject]) {
+        errorType = errorDictionary["error"]?["type"] as? String
+        errorDescription = errorDictionary["error"]?["description"] as? String
     }
 }

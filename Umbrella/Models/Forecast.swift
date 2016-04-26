@@ -9,13 +9,14 @@
 import Foundation
 
 struct Forecast {
-    var zipError: ZipError?
+    var errors: WeatherError?
     var currentWeather: CurrentWeather?
     var hourly: [HourlyWeather] = []
     
+    // Create appropriate weather Dictionaries based on keys
     init(weatherDictionary: [String: AnyObject]?) {
         if let responseDictionary = weatherDictionary?["response"] as? [String: AnyObject] {
-            zipError = ZipError(weatherDictionary: responseDictionary)
+            errors = WeatherError(errorDictionary: responseDictionary)
         }
         
         if let currentWeatherDictionary = weatherDictionary?["current_observation"] as? [String: AnyObject] {

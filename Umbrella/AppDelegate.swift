@@ -28,8 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Throw a comment if you want on which you chose and why.
         
         // UIColors for the use for reference in the rest of the application
-        let warmColor = UIColor(0xFF9800)
-        let coolColor = UIColor(0x03A9F4)
+//        let warmColor = UIColor(0xFF9800)
+//        let coolColor = UIColor(0x03A9F4)
         
 //        // Setup the request
 //        var weatherRequest = WeatherRequest(APIKey: "fe607001f7266360")
@@ -54,17 +54,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Temp         : hourly_forecast.temp.(english || metric)
         
         // How to use the icon name to get the URL. Solid icons are used for the daily highs and lows
-        let solidIcon = "clear".nrd_weatherIconURL(highlighted: true)
-        let outlineIcon = "clear".nrd_weatherIconURL()
+//        let solidIcon = "clear".nrd_weatherIconURL(highlighted: true)
+//        let outlineIcon = "clear".nrd_weatherIconURL()
         
         return true
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        print("Did become active")
         let mvc = self.window!.rootViewController as! MainViewController
-        mvc.retrieveWeatherForecast()
+        mvc.retrieveWeatherForecast(validateZip: false)
      
     }
 
