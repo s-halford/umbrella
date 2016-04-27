@@ -11,6 +11,7 @@ import UIKit
 @IBDesignable
 class RoundedRect: UIView {
     
+    //Add a corner radius to a view
     @IBInspectable var cornerRadius: CGFloat = 10.0 {
         didSet {
             layer.cornerRadius = cornerRadius

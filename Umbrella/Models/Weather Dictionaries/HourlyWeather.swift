@@ -15,7 +15,9 @@ struct HourlyWeather {
     let icon_url: String?
     let temp_english: String?
     let temp_metric: String?
-   
+    
+    
+    // Set hourly weather properties from hourly weather dictionarie
     init(hourlyWeatherDict: [String: AnyObject]) {
         
         timeStamp = hourlyWeatherDict["FCTTIME"]?["civil"] as? String

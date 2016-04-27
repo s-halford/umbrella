@@ -13,6 +13,7 @@ struct WeatherError {
     let errorType: String?
     let errorDescription: String?
     
+    // Retrieve any error messages from the API in case of invalid ZIP code
     init(errorDictionary: [String: AnyObject]) {
         errorType = errorDictionary["error"]?["type"] as? String
         errorDescription = errorDictionary["error"]?["description"] as? String

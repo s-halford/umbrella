@@ -15,6 +15,8 @@ struct CurrentWeather {
     let cityState: String?
     let currentConditions: String?
     
+    
+    // Retrieve current weather data to display in UI
     init(weatherDictionary: [String: AnyObject]) {
         temp_f = weatherDictionary["temp_f"] as? Double
         temp_c = weatherDictionary["temp_c"] as? Double
