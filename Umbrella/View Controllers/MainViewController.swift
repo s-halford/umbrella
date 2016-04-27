@@ -68,8 +68,6 @@ class MainViewController: UIViewController {
     // MARK: - Weather Fetching
     
     func retrieveWeatherForecast(validateZip validateZip: Bool) {
-        // Clear daily weather
-        dailyWeather = []
         
         var weatherRequest = WeatherRequest(APIKey: apiKey)
         
@@ -86,17 +84,69 @@ class MainViewController: UIViewController {
             
             (let forecast) in
             
-            //Handle any errors related to Zip Code Entry
-            if let weatherError = forecast!.errors where
-                weatherError.errorDescription != nil {
+            //Set up weather data
+            if let weatherForecast = forecast {
                 
+                // If there aren't any errors with the ZIP code entry, setup all the weather data
+                guard let weatherError = weatherForecast.errors where weatherError.errorDescription != nil else {
+                    
+                    // Clear daily weather
+                    self.dailyWeather = []
+                    
+                    //Display current weather data in UI
+                    if let currentWeather = weatherForecast.currentWeather {
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            
+                            if let temp_f = currentWeather.temp_f,
+                                let temp_c = currentWeather.temp_c {
+                                
+                                //Set background box color to warm or cool dependent on current temperature value
+                                if(temp_f >= 60) {
+                                    self.backgroundBox.layer.backgroundColor = self.warmColor.CGColor
+                                } else {
+                                    self.backgroundBox.layer.backgroundColor = self.coolColor.CGColor
+                                }
+                                
+                                //Round the current temperature value and display it in the UI
+                                if(self.tempScale == TempScales.f) {
+                                    self.currentTemperatureLabel?.text = "\(Int(round(temp_f)))º"
+                                } else {
+                                    self.currentTemperatureLabel?.text = "\(Int(round(temp_c)))º"
+                                }
+                            }
+                            
+                            //Display City/State Info
+                            if let cityState = currentWeather.cityState {
+                                self.currentCityStateLabel?.text = "\(cityState)"
+                            }
+                            
+                            //Display Current Conditons Info
+                            if let currentConditions = currentWeather.currentConditions {
+                                self.currentConditionsLabel?.text = "\(currentConditions)"
+                            }
+                            
+                            //Retrieve the returned hourly forecast info, and convert the results to the daily data models
+                            let dailyRequest = DailyRequest(weatherForecast.hourly)
+                            self.dailyWeather = dailyRequest.Daily!
+                           
+                            //Refresh the view with the current data
+                            self.collectionView?.reloadData()
+                            
+                        }
+                    }
+                    return
+                }
+                
+                
+                // If there was an error with weather data, display appropriate alert
                 dispatch_async(dispatch_get_main_queue()) {
                     
                     if(validateZip) {
                         
                         //Configure an alert with any errors in weather fetching
                         let alert = UIAlertController(title: nil, message: weatherError.errorDescription?.capitalizedString, preferredStyle: .Alert)
-                       
+                        
                         //Display a more user-friendly message if no zip code has been entered
                         if(weatherError.errorType == "invalidquery") {
                             alert.message = "Please Enter a ZIP Code Location"
@@ -110,55 +160,7 @@ class MainViewController: UIViewController {
                         //Present the Alert View
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
-                   }
-                }
-            }
-            
-            //Set up weather data
-            if let weatherForecast = forecast,
-                
-                //Display current weather data in UI
-                let currentWeather = weatherForecast.currentWeather {
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    
-                    if let temp_f = currentWeather.temp_f,
-                        let temp_c = currentWeather.temp_c {
-                        
-                        //Set background box color to warm or cool dependent on current temperature value
-                        if(temp_f >= 60) {
-                            self.backgroundBox.layer.backgroundColor = self.warmColor.CGColor
-                        } else {
-                            self.backgroundBox.layer.backgroundColor = self.coolColor.CGColor
-                        }
-                        
-                        //Round the current temperature value and display it in the UI
-                        if(self.tempScale == TempScales.f) {
-                            self.currentTemperatureLabel?.text = "\(Int(round(temp_f)))º"
-                        } else {
-                            self.currentTemperatureLabel?.text = "\(Int(round(temp_c)))º"
-                        }
-                        
-                        
                     }
-                    
-                    //Display City/State Info
-                    if let cityState = currentWeather.cityState {
-                        self.currentCityStateLabel?.text = "\(cityState)"
-                    }
-                    
-                    //Display Current Conditons Info
-                    if let currentConditions = currentWeather.currentConditions {
-                        self.currentConditionsLabel?.text = "\(currentConditions)"
-                    }
-                    
-                    //Retrieve the returned hourly forecast info, and convert the results to the daily data models
-                    let dailyRequest = DailyRequest(weatherForecast.hourly)
-                    self.dailyWeather = dailyRequest.Daily!
-                    
-                    //Refresh the view with the current data
-                    self.collectionView?.reloadData()
-                
                 }
             }
         }
@@ -184,7 +186,7 @@ extension MainViewController: UICollectionViewDataSource {
         //fatalError()
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("hourlyCell", forIndexPath: indexPath) as! HourlyCell
-        
+        //print(dailyWeather)
         let hourWeather = dailyWeather[indexPath.section].hourlyWeather[indexPath.row]
         
         if let timeStamp = hourWeather.timeStamp {

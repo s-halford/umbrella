@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         if(zipTextField.isFirstResponder()) {
             self.view.endEditing(true)
         } else {
-            self.performSegueWithIdentifier("unwindToMain", sender: self)
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
     }
 
