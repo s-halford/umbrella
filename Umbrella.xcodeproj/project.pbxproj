@@ -135,8 +135,6 @@
 				44DE82D41BCDF49900A319D2 /* Models */,
 				44DE82D51BCDF4A700A319D2 /* Extensions */,
 				44DE82B31BCDF45900A319D2 /* AppDelegate.swift */,
-				44DE82BC1BCDF45900A319D2 /* LaunchScreen.storyboard */,
-				44DE82B71BCDF45900A319D2 /* Main.storyboard */,
 				44DE82BA1BCDF45900A319D2 /* Assets.xcassets */,
 				44DE82BF1BCDF45900A319D2 /* Info.plist */,
 				44DE82DA1BCDF4FE00A319D2 /* metrics.md */,
@@ -200,6 +198,8 @@
 		853EE4F31CCF2B56008903B5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				44DE82BC1BCDF45900A319D2 /* LaunchScreen.storyboard */,
+				44DE82B71BCDF45900A319D2 /* Main.storyboard */,
 				853EE3B91CBEF621008903B5 /* SectionHeader.swift */,
 				853EE3B71CBED46D008903B5 /* HourlyCell.swift */,
 				853EE3DB1CBF58E3008903B5 /* DrawLine.swift */,
@@ -356,6 +356,7 @@
 				44DE82B81BCDF45900A319D2 /* Base */,
 			);
 			name = Main.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		44DE82BC1BCDF45900A319D2 /* LaunchScreen.storyboard */ = {
@@ -364,6 +365,7 @@
 				44DE82BD1BCDF45900A319D2 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

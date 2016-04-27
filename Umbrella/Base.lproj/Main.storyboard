@@ -381,7 +381,7 @@
                                                         <rect key="frame" x="245" y="70" width="110" height="30"/>
                                                         <state key="normal" title="Get the weather"/>
                                                         <connections>
-                                                            <segue destination="5HP-Li-T4U" kind="unwind" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
+                                                            <segue destination="5HP-Li-T4U" kind="unwind" identifier="" unwindAction="returnFromSettingsSegue:" id="Ts3-je-bNi"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -421,6 +421,7 @@
                     <connections>
                         <outlet property="tempScaleSegmentedControl" destination="Wtx-nR-VNG" id="dSR-m5-gXW"/>
                         <outlet property="zipTextField" destination="sfi-pY-IRz" id="TZ4-Pu-zMs"/>
+                        <segue destination="5HP-Li-T4U" kind="unwind" identifier="unwindToMain" unwindAction="returnFromSettingsSegue:" id="oRF-44-B7r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9pf-OA-xHL" userLabel="First Responder" sceneMemberID="firstResponder"/>
