@@ -15,6 +15,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var currentCityStateLabel: UILabel?
     @IBOutlet weak var backgroundBox: UIView!
     @IBOutlet weak var collectionView: UICollectionView?
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     var dailyWeather: [DailyWeather] = []
     
@@ -67,7 +69,22 @@ class MainViewController: UIViewController {
     
     // MARK: - Weather Fetching
     
+    // Toggle Activity Indicator while data is being loaded
+    func toggleRefreshAnimation(on: Bool) {
+        collectionView?.hidden = on
+        if on {
+            activityIndicator?.startAnimating()
+        } else {
+            activityIndicator?.stopAnimating()
+        }
+    }
+    
     func retrieveWeatherForecast(validateZip validateZip: Bool) {
+        
+        //Display Activity Indicator while data is being fetched
+        //activityIndicator?.startAnimating()
+        //collectionView?.hidden = true;
+        toggleRefreshAnimation(true)
         
         var weatherRequest = WeatherRequest(APIKey: apiKey)
         
@@ -130,17 +147,22 @@ class MainViewController: UIViewController {
                             let dailyRequest = DailyRequest(weatherForecast.hourly)
                             self.dailyWeather = dailyRequest.Daily!
                            
-                            //Refresh the view with the current data
+                            //Refresh the view with the current data, turn off activity indicator
                             self.collectionView?.reloadData()
+                            self.toggleRefreshAnimation(false)
                             
                         }
                     }
+                    
                     return
                 }
                 
                 
                 // If there was an error with weather data, display appropriate alert
                 dispatch_async(dispatch_get_main_queue()) {
+                    
+                    // Turn off activity indicator
+                    self.toggleRefreshAnimation(false)
                     
                     if(validateZip) {
                         
@@ -161,13 +183,11 @@ class MainViewController: UIViewController {
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
                     }
+                    
                 }
             }
         }
-        
     }
-    
-    
 }
 
 
@@ -186,7 +206,7 @@ extension MainViewController: UICollectionViewDataSource {
         //fatalError()
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("hourlyCell", forIndexPath: indexPath) as! HourlyCell
-        //print(dailyWeather)
+
         let hourWeather = dailyWeather[indexPath.section].hourlyWeather[indexPath.row]
         
         if let timeStamp = hourWeather.timeStamp {

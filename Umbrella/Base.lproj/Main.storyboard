@@ -17,6 +17,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qxJ-bg-frT">
+                                <rect key="frame" x="290" y="373" width="20" height="20"/>
+                            </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hwj-bF-FWv">
                                 <rect key="frame" x="0.0" y="166" width="600" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -224,6 +227,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="qxJ-bg-frT" firstAttribute="centerY" secondItem="hwj-bF-FWv" secondAttribute="centerY" id="0Do-NU-Kfa"/>
                             <constraint firstAttribute="trailing" secondItem="hwj-bF-FWv" secondAttribute="trailing" id="0Xu-Qt-bpb"/>
                             <constraint firstItem="svC-1V-kzb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="1al-39-ddn"/>
                             <constraint firstItem="svC-1V-kzb" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="AIh-Qx-vhh"/>
@@ -247,6 +251,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="svC-1V-kzb" secondAttribute="trailing" constant="-20" id="kxv-Lh-jAu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="svC-1V-kzb" secondAttribute="trailing" constant="-20" id="n1J-Zd-NPm"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="svC-1V-kzb" secondAttribute="bottom" id="oZ2-FC-mD8"/>
+                            <constraint firstItem="qxJ-bg-frT" firstAttribute="centerX" secondItem="hwj-bF-FWv" secondAttribute="centerX" id="pQL-32-QI1"/>
                             <constraint firstItem="svC-1V-kzb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="qD8-39-ddk"/>
                             <constraint firstItem="svC-1V-kzb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="qWy-49-FVk"/>
                             <constraint firstItem="svC-1V-kzb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="yof-OZ-T0G"/>
@@ -297,6 +302,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="qxJ-bg-frT" id="Y9Q-JX-1Fq"/>
                         <outlet property="backgroundBox" destination="svC-1V-kzb" id="x43-Oi-UBu"/>
                         <outlet property="collectionView" destination="hwj-bF-FWv" id="qfv-0Y-gvu"/>
                         <outlet property="currentCityStateLabel" destination="FPZ-Vg-UhY" id="8kQ-LW-U9A"/>
