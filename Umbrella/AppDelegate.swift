@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Update weather upon returning to app
         let mvc = self.window!.rootViewController as! MainViewController
-        mvc.retrieveWeatherForecast(validateZip: false)
+        mvc.retrieveWeatherForecast()
      
     }
 

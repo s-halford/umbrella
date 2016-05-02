@@ -9,19 +9,25 @@
 import Foundation
 import UIKit
 
+enum NetworkResult {
+    case Success([String : AnyObject])
+    case Error(NSError)
+}
+
 class NetworkOperation {
     
     lazy var config: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
     lazy var session: NSURLSession = NSURLSession(configuration: self.config)
     let queryURL: NSURL
+    var errorMsg: String?
     
-    typealias JSONDictionaryCompletion = ([String: AnyObject]?) -> Void
+    typealias JSONDictionaryCompletion = ([String: AnyObject]?) -> String
     
     init(url: NSURL) {
         self.queryURL = url
     }
     
-    func downloadJSONFromURL(completion: JSONDictionaryCompletion) {
+    func downloadJSONFromURL(completion: (result: NetworkResult) -> Void) -> Void {
         
         // Perform the network request
         let request: NSURLRequest = NSURLRequest(URL: queryURL)
@@ -35,7 +41,7 @@ class NetworkOperation {
                         do {
                             //Serialize JSON data
                             let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
-                            completion(jsonDictionary)
+                            completion(result: NetworkResult.Success(jsonDictionary))
                         } catch let error {
                             print("JSON Serialization failed. Error: \(error)")
                         }
@@ -43,7 +49,7 @@ class NetworkOperation {
                         print("GET request not successful.  HTTP status code: \(httpResponse.statusCode)")
                 }
             } else {
-                print("Error: \(error?.localizedDescription)")
+                completion(result: NetworkResult.Error(error!))
             }
         }
         

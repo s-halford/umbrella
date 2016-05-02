@@ -8,19 +8,29 @@
 
 import Foundation
 
+enum ForecastResult {
+    case Success(Forecast)
+    case Error(NSError)
+}
+
 struct ForecastService {
     
     
     //Perform network operation, create Forecast objects
-    func getForecast(URL: NSURL, completion: ((Forecast?)-> Void)) {
+    func getForecast(URL: NSURL, completion: (ForecastResult) -> Void) -> Void {
         let networkOperation = NetworkOperation(url: URL)
    
-        networkOperation.downloadJSONFromURL {
-            (let JSONDictionary) in
-            let forecast = Forecast(weatherDictionary: JSONDictionary)
-            completion(forecast)
+        networkOperation.downloadJSONFromURL { (result: NetworkResult) -> Void in
             
+            switch result {
+                case .Success(let f):
+                    let forecast = Forecast(weatherDictionary: f)
+                    completion(ForecastResult.Success(forecast))
+                case .Error(let e):
+                    completion(ForecastResult.Error(e))
+            }
         }
+        
         
         
     }

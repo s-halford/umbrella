@@ -25,6 +25,7 @@ class MainViewController: UIViewController {
     let coolColor = UIColor(0x03A9F4)
     var tempScale = TempScales.f
     var currentZip = ""
+    var validateZip = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +37,7 @@ class MainViewController: UIViewController {
         currentConditionsLabel?.text = " "
         currentCityStateLabel?.text = " "
         backgroundBox.layer.backgroundColor = warmColor.CGColor
-        retrieveWeatherForecast(validateZip: true)
-        
+        //retrieveWeatherForecast(validateZip: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,9 +51,10 @@ class MainViewController: UIViewController {
         
         // Retrieve updated values from the Settings View Controlloer
         if let svc = segue.sourceViewController as? SettingsViewController {
+            validateZip = true
             tempScale = svc.tempScale
             currentZip = svc.zipTextField.text!
-            retrieveWeatherForecast(validateZip: true)
+            retrieveWeatherForecast()
         }
     }
     
@@ -79,11 +80,9 @@ class MainViewController: UIViewController {
         }
     }
     
-    func retrieveWeatherForecast(validateZip validateZip: Bool) {
+    func retrieveWeatherForecast() {
         
         //Display Activity Indicator while data is being fetched
-        //activityIndicator?.startAnimating()
-        //collectionView?.hidden = true;
         toggleRefreshAnimation(true)
         
         var weatherRequest = WeatherRequest(APIKey: apiKey)
@@ -97,13 +96,11 @@ class MainViewController: UIViewController {
         // Use ForecastService to retrieve current weather data
         let forecastService = ForecastService()
         
-        forecastService.getForecast(url!) {
+        
+        forecastService.getForecast(url!) { (result: ForecastResult) -> Void in
             
-            (let forecast) in
-            
-            //Set up weather data
-            if let weatherForecast = forecast {
-                
+            switch (result) {
+            case .Success(let weatherForecast):
                 // If there aren't any errors with the ZIP code entry, setup all the weather data
                 guard let weatherError = weatherForecast.errors where weatherError.errorDescription != nil else {
                     
@@ -146,7 +143,7 @@ class MainViewController: UIViewController {
                             //Retrieve the returned hourly forecast info, and convert the results to the daily data models
                             let dailyRequest = DailyRequest(weatherForecast.hourly)
                             self.dailyWeather = dailyRequest.Daily!
-                           
+                            
                             //Refresh the view with the current data, turn off activity indicator
                             self.collectionView?.reloadData()
                             self.toggleRefreshAnimation(false)
@@ -164,31 +161,68 @@ class MainViewController: UIViewController {
                     // Turn off activity indicator
                     self.toggleRefreshAnimation(false)
                     
-                    if(validateZip) {
+                    if(self.validateZip) {
+                        var alertMsg: String?
                         
-                        //Configure an alert with any errors in weather fetching
-                        let alert = UIAlertController(title: nil, message: weatherError.errorDescription?.capitalizedString, preferredStyle: .Alert)
-                        
-                        //Display a more user-friendly message if no zip code has been entered
                         if(weatherError.errorType == "invalidquery") {
-                            alert.message = "Please Enter a ZIP Code Location"
+                            // Display a more user-friendly error message when no zip code is entered
+                            alertMsg = "Please Enter a ZIP Code Location"
+                        } else {
+                            alertMsg = weatherError.errorDescription?.capitalizedString
                         }
                         
-                        //Take users to the settings screen if no ZIP code exists or the one they entered is invalid
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (a) in
                             self.performSegueWithIdentifier("settingsSegue", sender: nil)
                         })
                         
-                        //Present the Alert View
+                        let alert = UIAlertController(title: nil, message: alertMsg, preferredStyle: .Alert)
                         alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        
+                        // If an alert view is present remove it and show the new alert, otherwise display the alert
+                        if(self.presentedViewController is UIAlertController) {
+                            self.presentedViewController?.dismissViewControllerAnimated(true) {
+                                self.presentViewController(alert, animated: true, completion: nil)
+                            }
+                        } else {
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
+                        
                     }
                     
+                    self.validateZip = false
+                    
                 }
+                
+                break
+                
+            // Handle invalid http request
+            case .Error(let e):
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    let alert = UIAlertController(title: nil, message: e.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    // If the user clicks the Retry button upon http failure, it will retry to load the weather
+                    alert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default, handler: { (a) in
+                        self.retrieveWeatherForecast()
+                    }))
+                    
+                    
+                    // Display alert if no valid http response was established
+                    if((self.presentedViewController) == nil) {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        self.presentedViewController?.dismissViewControllerAnimated(true) {
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+                
+                break
             }
         }
     }
 }
+
 
 
 // MARK: - UICollectionViewDataSource
